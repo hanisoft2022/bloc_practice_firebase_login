@@ -1,6 +1,11 @@
 part of 'login_cubit.dart';
 
 final class LoginState extends Equatable {
+  final Email email;
+  final Password password;
+  final FormzSubmissionStatus status;
+  final String? errorMessage;
+
   const LoginState() : this._();
 
   const LoginState._({
@@ -19,19 +24,11 @@ final class LoginState extends Equatable {
   }
 
   LoginState withSubmissionInProgress() {
-    return LoginState._(
-      email: email,
-      password: password,
-      status: FormzSubmissionStatus.inProgress,
-    );
+    return LoginState._(email: email, password: password, status: FormzSubmissionStatus.inProgress);
   }
 
   LoginState withSubmissionSuccess() {
-    return LoginState._(
-      email: email,
-      password: password,
-      status: FormzSubmissionStatus.success,
-    );
+    return LoginState._(email: email, password: password, status: FormzSubmissionStatus.success);
   }
 
   LoginState withSubmissionFailure([String? error]) {
@@ -42,11 +39,6 @@ final class LoginState extends Equatable {
       errorMessage: error,
     );
   }
-
-  final Email email;
-  final Password password;
-  final FormzSubmissionStatus status;
-  final String? errorMessage;
 
   bool get isValid => Formz.validate([email, password]);
 

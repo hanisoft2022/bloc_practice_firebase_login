@@ -284,7 +284,7 @@ packages:
       path: "packages/form_inputs"
       relative: true
     source: path
-    version: "0.0.0"
+    version: "1.0.0+1"
   formz:
     dependency: "direct main"
     description:

@@ -7,9 +7,9 @@ import 'package:formz/formz.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit(this._authenticationRepository) : super(const LoginState());
-
   final AuthenticationRepository _authenticationRepository;
+
+  LoginCubit(this._authenticationRepository) : super(const LoginState());
 
   void emailChanged(String email) => emit(state.withEmail(email));
 

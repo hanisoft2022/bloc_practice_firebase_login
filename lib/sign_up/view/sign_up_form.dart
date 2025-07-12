@@ -15,9 +15,7 @@ class SignUpForm extends StatelessWidget {
         } else if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(
-              SnackBar(content: Text(state.errorMessage ?? 'Sign Up Failure')),
-            );
+            ..showSnackBar(SnackBar(content: Text(state.errorMessage ?? 'Sign Up Failure')));
         }
       },
       child: Align(
@@ -42,9 +40,7 @@ class SignUpForm extends StatelessWidget {
 class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select(
-      (SignUpCubit cubit) => cubit.state.email.displayError,
-    );
+    final displayError = context.select((SignUpCubit cubit) => cubit.state.email.displayError);
 
     return TextField(
       key: const Key('signUpForm_emailInput_textField'),
@@ -62,14 +58,11 @@ class _EmailInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select(
-      (SignUpCubit cubit) => cubit.state.password.displayError,
-    );
+    final displayError = context.select((SignUpCubit cubit) => cubit.state.password.displayError);
 
     return TextField(
       key: const Key('signUpForm_passwordInput_textField'),
-      onChanged: (password) =>
-          context.read<SignUpCubit>().passwordChanged(password),
+      onChanged: (password) => context.read<SignUpCubit>().passwordChanged(password),
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'password',
@@ -104,27 +97,19 @@ class _ConfirmPasswordInput extends StatelessWidget {
 class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isInProgress = context.select(
-      (SignUpCubit cubit) => cubit.state.status.isInProgress,
-    );
+    final isInProgress = context.select((SignUpCubit cubit) => cubit.state.status.isInProgress);
 
     if (isInProgress) return const CircularProgressIndicator();
 
-    final isValid = context.select(
-      (SignUpCubit cubit) => cubit.state.isValid,
-    );
+    final isValid = context.select((SignUpCubit cubit) => cubit.state.isValid);
 
     return ElevatedButton(
       key: const Key('signUpForm_continue_raisedButton'),
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         backgroundColor: Colors.orangeAccent,
       ),
-      onPressed: isValid
-          ? () => context.read<SignUpCubit>().signUpFormSubmitted()
-          : null,
+      onPressed: isValid ? () => context.read<SignUpCubit>().signUpFormSubmitted() : null,
       child: const Text('SIGN UP'),
     );
   }
