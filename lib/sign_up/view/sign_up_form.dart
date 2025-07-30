@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_login/sign_up/sign_up.dart';
+import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -40,17 +41,22 @@ class SignUpForm extends StatelessWidget {
 class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((SignUpCubit cubit) => cubit.state.email.displayError);
-
-    return TextField(
-      key: const Key('signUpForm_emailInput_textField'),
-      onChanged: (email) => context.read<SignUpCubit>().emailChanged(email),
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        labelText: 'email',
-        helperText: '',
-        errorText: displayError != null ? 'invalid email' : null,
-      ),
+    return BlocSelector<SignUpCubit, SignUpState, EmailValidationError?>(
+      selector: (state) {
+        return state.email.displayError;
+      },
+      builder: (context, emailValidationError) {
+        return TextField(
+          key: const Key('signUpForm_emailInput_textField'),
+          onChanged: (email) => context.read<SignUpCubit>().emailChanged(email),
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            labelText: 'email',
+            helperText: '',
+            errorText: emailValidationError != null ? 'invalid email' : null,
+          ),
+        );
+      },
     );
   }
 }
@@ -58,17 +64,22 @@ class _EmailInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((SignUpCubit cubit) => cubit.state.password.displayError);
-
-    return TextField(
-      key: const Key('signUpForm_passwordInput_textField'),
-      onChanged: (password) => context.read<SignUpCubit>().passwordChanged(password),
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'password',
-        helperText: '',
-        errorText: displayError != null ? 'invalid password' : null,
-      ),
+    return BlocSelector<SignUpCubit, SignUpState, PasswordValidationError?>(
+      selector: (state) {
+        return state.password.displayError;
+      },
+      builder: (context, passwordValidationError) {
+        return TextField(
+          key: const Key('signUpForm_passwordInput_textField'),
+          onChanged: (password) => context.read<SignUpCubit>().passwordChanged(password),
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: 'password',
+            helperText: '',
+            errorText: passwordValidationError != null ? 'invalid password' : null,
+          ),
+        );
+      },
     );
   }
 }
@@ -76,20 +87,23 @@ class _PasswordInput extends StatelessWidget {
 class _ConfirmPasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select(
-      (SignUpCubit cubit) => cubit.state.confirmedPassword.displayError,
-    );
-
-    return TextField(
-      key: const Key('signUpForm_confirmedPasswordInput_textField'),
-      onChanged: (confirmPassword) =>
-          context.read<SignUpCubit>().confirmedPasswordChanged(confirmPassword),
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'confirm password',
-        helperText: '',
-        errorText: displayError != null ? 'passwords do not match' : null,
-      ),
+    return BlocSelector<SignUpCubit, SignUpState, ConfirmedPasswordValidationError?>(
+      selector: (state) {
+        return state.confirmedPassword.displayError;
+      },
+      builder: (context, confirmedPasswordValidationError) {
+        return TextField(
+          key: const Key('signUpForm_confirmedPasswordInput_textField'),
+          onChanged: (confirmPassword) =>
+              context.read<SignUpCubit>().confirmedPasswordChanged(confirmPassword),
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: 'confirm password',
+            helperText: '',
+            errorText: confirmedPasswordValidationError != null ? 'passwords do not match' : null,
+          ),
+        );
+      },
     );
   }
 }

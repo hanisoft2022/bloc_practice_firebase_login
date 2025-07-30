@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_firebase_login/login/login.dart';
 import 'package:flutter_firebase_login/sign_up/sign_up.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 
 class LoginForm extends StatelessWidget {
@@ -46,17 +47,22 @@ class LoginForm extends StatelessWidget {
 class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((LoginCubit cubit) => cubit.state.email.displayError);
-
-    return TextField(
-      key: const Key('loginForm_emailInput_textField'),
-      onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        labelText: 'email',
-        helperText: '',
-        errorText: displayError != null ? 'invalid email' : null,
-      ),
+    return BlocSelector<LoginCubit, LoginState, EmailValidationError?>(
+      selector: (state) {
+        return state.email.displayError;
+      },
+      builder: (context, emailValidationError) {
+        return TextField(
+          key: const Key('loginForm_emailInput_textField'),
+          onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            labelText: 'email',
+            helperText: '',
+            errorText: emailValidationError != null ? 'invalid email' : null,
+          ),
+        );
+      },
     );
   }
 }
@@ -64,17 +70,22 @@ class _EmailInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final displayError = context.select((LoginCubit cubit) => cubit.state.password.displayError);
-
-    return TextField(
-      key: const Key('loginForm_passwordInput_textField'),
-      onChanged: (password) => context.read<LoginCubit>().passwordChanged(password),
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: 'password',
-        helperText: '',
-        errorText: displayError != null ? 'invalid password' : null,
-      ),
+    return BlocSelector<LoginCubit, LoginState, PasswordValidationError?>(
+      selector: (state) {
+        return state.password.displayError;
+      },
+      builder: (context, passwordValidationError) {
+        return TextField(
+          key: const Key('loginForm_passwordInput_textField'),
+          onChanged: (password) => context.read<LoginCubit>().passwordChanged(password),
+          obscureText: true,
+          decoration: InputDecoration(
+            labelText: 'password',
+            helperText: '',
+            errorText: passwordValidationError != null ? 'invalid password' : null,
+          ),
+        );
+      },
     );
   }
 }
